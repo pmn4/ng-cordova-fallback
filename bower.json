@@ -1,0 +1,25 @@
+{
+  "name": "ngCordovaFallback",
+  "version": "0.0.0",
+  "authors": [
+    "Pat Newell (@gcpmn)"
+  ],
+  "description": "Graceful Degradation for ngCordova Features.  see: https://github.com/driftyco/ng-cordova",
+  "main": "dist/ng-cordova-fallback",
+  "keywords": [
+    "ng-cordova",
+    "angular",
+    "ionic",
+    "fallback",
+    "degradation"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/pmn4/ng-cordova-fallback",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
