@@ -6,7 +6,12 @@
   ],
   "description": "Graceful Degradation for ngCordova Features.  see: https://github.com/driftyco/ng-cordova",
   "main": "dist/ng-cordova-fallback",
+  "dependencies": {
+    "angular": ">= 1.2.23",
+    "ng-cordova": "0.1.12-alpha"
+  },
   "keywords": [
+    "ng-cordova-fallback",
     "ng-cordova",
     "angular",
     "ionic",
