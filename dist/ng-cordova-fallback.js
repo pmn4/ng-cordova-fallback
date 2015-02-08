@@ -10,6 +10,8 @@ angular.module('ngCordova', [
   'ngCordova.plugins'
 ]);
 
+// http://ionicframework.com/docs/api/service/$ionicActionSheet/
+
 angular
 	.module("ngCordovaFallback.plugins.actionSheet", [])
 	.factory("$cordovaFallbackActionSheet", [
@@ -327,33 +329,30 @@ angular
 		}
 	]);
 
-;(function (angular) {
-	"use strict";
+angular.module("ngCordovaFallback.plugins.ga", [])
+	.factory("$cordovaFallbackGA", [
+		"$q",
+		function ($q) {
+			var rejected = $q.reject("Not implemented");
 
-	angular.module("ngCordovaFallback.plugins.ga", [])
-		.factory("$cordovaFallbackGA", [
-			"$q",
-			function ($q) {
-				var rejected = $q.reject("Not implemented");
+			return {
+				init: function (id, mingap) { return rejected; },
 
-				return {
-					init: function (id, mingap) { return rejected; },
+				// this method signature looks very wrong (success?, fail?)
+				trackEvent: function (success, fail, category, eventAction, eventLabel, eventValue) { return rejected; },
 
-					// this method signature looks very wrong (success?, fail?)
-					trackEvent: function (success, fail, category, eventAction, eventLabel, eventValue) { return rejected; },
+				// this method signature looks very wrong (success?, fail?)
+				trackPage: function (success, fail, pageURL) { return rejected; },
 
-					// this method signature looks very wrong (success?, fail?)
-					trackPage: function (success, fail, pageURL) { return rejected; },
+				// this method signature looks very wrong (success?, fail?)
+				setVariable: function (success, fail, index, value) { return rejected; },
 
-					// this method signature looks very wrong (success?, fail?)
-					setVariable: function (success, fail, index, value) { return rejected; },
+				// this method signature looks very wrong (success?, fail?)
+				exit: function (success, fail) { return rejected; },
+			};
+		}
+	]);
 
-					// this method signature looks very wrong (success?, fail?)
-					exit: function (success, fail) { return rejected; },
-				};
-			}
-		]);
-})(window.angular);
 // copy from ngCordova
 
 angular
@@ -472,11 +471,122 @@ angular
 		}
 	]);
 
+angular.module('ngCordovaFallback.plugins', [
+  'ngCordovaFallback.plugins.actionSheet',
+  'ngCordovaFallback.plugins.adMob',
+  'ngCordovaFallback.plugins.appAvailability',
+  'ngCordovaFallback.plugins.appRate',
+  'ngCordovaFallback.plugins.appVersion',
+  'ngCordovaFallback.plugins.backgroundGeolocation',
+  'ngCordovaFallback.plugins.badge',
+  'ngCordovaFallback.plugins.barcodeScanner',
+  'ngCordovaFallback.plugins.batteryStatus',
+  'ngCordovaFallback.plugins.ble',
+  'ngCordovaFallback.plugins.bluetoothSerial',
+  'ngCordovaFallback.plugins.brightness',
+  'ngCordovaFallback.plugins.calendar',
+  'ngCordovaFallback.plugins.camera',
+  'ngCordovaFallback.plugins.capture',
+  'ngCordovaFallback.plugins.clipboard',
+  'ngCordovaFallback.plugins.contacts',
+  'ngCordovaFallback.plugins.datePicker',
+  'ngCordovaFallback.plugins.device',
+  'ngCordovaFallback.plugins.deviceMotion',
+  'ngCordovaFallback.plugins.deviceOrientation',
+  'ngCordovaFallback.plugins.dialogs',
+  'ngCordovaFallback.plugins.emailComposer',
+  'ngCordovaFallback.plugins.facebook',
+  'ngCordovaFallback.plugins.facebookAds',
+  'ngCordovaFallback.plugins.file',
+  'ngCordovaFallback.plugins.fileTransfer',
+  'ngCordovaFallback.plugins.fileOpener2',
+  'ngCordovaFallback.plugins.flashlight',
+  'ngCordovaFallback.plugins.flurryAds',
+  'ngCordovaFallback.plugins.ga',
+  'ngCordovaFallback.plugins.geolocation',
+  'ngCordovaFallback.plugins.globalization',
+  'ngCordovaFallback.plugins.googleAds',
+  'ngCordovaFallback.plugins.googleAnalytics',
+  'ngCordovaFallback.plugins.googleMap',
+  'ngCordovaFallback.plugins.healthKit',
+  'ngCordovaFallback.plugins.httpd',
+  'ngCordovaFallback.plugins.iAd',
+  'ngCordovaFallback.plugins.imagePicker',
+  'ngCordovaFallback.plugins.inAppBrowser',
+  'ngCordovaFallback.plugins.keyboard',
+  'ngCordovaFallback.plugins.keychain',
+  'ngCordovaFallback.plugins.localNotification',
+  'ngCordovaFallback.plugins.media',
+  'ngCordovaFallback.plugins.mMediaAds',
+  'ngCordovaFallback.plugins.mobfoxAds',
+  'ngCordovaFallback.plugins.mopubAds',
+  'ngCordovaFallback.plugins.nativeAudio',
+  'ngCordovaFallback.plugins.network',
+  'ngCordovaFallback.plugins.oauth',
+  'ngCordovaFallback.plugins.oauthUtility',
+  'ngCordovaFallback.plugins.pinDialog',
+  'ngCordovaFallback.plugins.prefs',
+  'ngCordovaFallback.plugins.printer',
+  'ngCordovaFallback.plugins.progressIndicator',
+  'ngCordovaFallback.plugins.push',
+  'ngCordovaFallback.plugins.sms',
+  'ngCordovaFallback.plugins.socialSharing',
+  'ngCordovaFallback.plugins.spinnerDialog',
+  'ngCordovaFallback.plugins.splashscreen',
+  'ngCordovaFallback.plugins.sqlite',
+  'ngCordovaFallback.plugins.statusbar',
+  'ngCordovaFallback.plugins.toast',
+  'ngCordovaFallback.plugins.touchid',
+  'ngCordovaFallback.plugins.vibration',
+  'ngCordovaFallback.plugins.videoCapturePlus',
+  'ngCordovaFallback.plugins.zip'
+]);
+
+// ngNetwork works on mobile event in the absence of the plugin, but Connection may be missing.
+// https://github.com/apache/cordova-plugin-network-information/blob/master/www/Connection.js
+window.Connection = window.Connection || {
+	UNKNOWN: "unknown",
+	ETHERNET: "ethernet",
+	WIFI: "wifi",
+	CELL_2G: "2g",
+	CELL_3G: "3g",
+	CELL_4G: "4g",
+	CELL: "cellular",
+	NONE: "none"
+};
+
 angular
 	.module("ngCordovaFallback.plugins.network", [])
 	.factory("$cordovaFallbackNetwork", [
 		"$window",
-		function ($window) {
+		"$rootScope",
+		"$timeout",
+		function ($window, $rootScope, $timeout) {
+			var offlineEvent, onlineEvent;
+
+			offlineEvent = function () {
+				var networkState = Connection.NONE;
+
+				$timeout(function () {
+					$rootScope.$broadcast("$cordovaNetwork:offline", networkState);
+				});
+			};
+
+			onlineEvent = function () {
+				var networkState = Connection.UNKNOWN;
+
+				$timeout(function () {
+					$rootScope.$broadcast("$cordovaNetwork:online", networkState);
+				});
+			};
+
+			document.addEventListener("deviceready", function () {
+				if ($window.navigator.connection) {
+					$window.document.addEventListener("offline", offlineEvent, false);
+					$window.document.addEventListener("online", onlineEvent, false);
+				}
+			});
+
 			return {
 				getNetwork: function () {
 					return {};
@@ -487,11 +597,24 @@ angular
 				},
 
 				isOffline: function () {
-					return !this.isOnline();
+					return !$window.navigator.onLine;
+				},
+
+				clearOfflineWatch: function () {
+					document.removeEventListener("offline", offlineEvent);
+					$rootScope.$$listeners["$cordovaNetwork:offline"] = [];
+				},
+
+				clearOnlineWatch: function () {
+					document.removeEventListener("online", offlineEvent);
+					$rootScope.$$listeners["$cordovaNetwork:online"] = [];
 				}
 			};
 		}
-	]);
+	])
+	.run(["$cordovaFallbackNetwork", function ($cordovaFallbackNetwork) {
+		// sets up the event listeners
+	}]);
 
 angular
 	.module("ngCordovaFallback.plugins.pinDialog", [])
