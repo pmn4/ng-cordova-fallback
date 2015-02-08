@@ -7,7 +7,7 @@ window.Connection = window.Connection || {
 	CELL_2G: "2g",
 	CELL_3G: "3g",
 	CELL_4G: "4g",
-	CELL:"cellular",
+	CELL: "cellular",
 	NONE: "none"
 };
 
@@ -15,7 +15,34 @@ angular
 	.module("ngCordovaFallback.plugins.network", [])
 	.factory("$cordovaFallbackNetwork", [
 		"$window",
-		function ($window) {
+		"$rootScope",
+		"$timeout",
+		function ($window, $rootScope, $timeout) {
+			var offlineEvent, onlineEvent;
+
+			offlineEvent = function () {
+				var networkState = Connection.NONE;
+
+				$timeout(function () {
+					$rootScope.$broadcast("$cordovaNetwork:offline", networkState);
+				});
+			};
+
+			onlineEvent = function () {
+				var networkState = Connection.UNKNOWN;
+
+				$timeout(function () {
+					$rootScope.$broadcast("$cordovaNetwork:online", networkState);
+				});
+			};
+
+			document.addEventListener("deviceready", function () {
+				if ($window.navigator.connection) {
+					$window.document.addEventListener("offline", offlineEvent, false);
+					$window.document.addEventListener("online", onlineEvent, false);
+				}
+			});
+
 			return {
 				getNetwork: function () {
 					return {};
@@ -26,8 +53,21 @@ angular
 				},
 
 				isOffline: function () {
-					return !this.isOnline();
+					return !$window.navigator.onLine;
+				},
+
+				clearOfflineWatch: function () {
+					document.removeEventListener("offline", offlineEvent);
+					$rootScope.$$listeners["$cordovaNetwork:offline"] = [];
+				},
+
+				clearOnlineWatch: function () {
+					document.removeEventListener("online", offlineEvent);
+					$rootScope.$$listeners["$cordovaNetwork:online"] = [];
 				}
 			};
 		}
-	]);
+	])
+	.run(["$cordovaFallbackNetwork", function ($cordovaFallbackNetwork) {
+		// sets up the event listeners
+	}]);
