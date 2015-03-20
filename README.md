@@ -18,7 +18,7 @@ index.html
 <script>
 var myApp = angular.module("myApp", [
 	"ionic",
-	"ngApp"
+	"ngApp" // <-- Contains logic to choose ngCordova if supported
 ]);
 myApp.controller("HomeController", ["$appActionSheet", function ($appActionSheet) {
 	$appActionSheet.show({
